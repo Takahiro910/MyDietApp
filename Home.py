@@ -1,5 +1,6 @@
 from datetime import datetime
 import pandas as pd
+import pytz
 import streamlit as st
 from utils import *
 
@@ -7,8 +8,10 @@ from utils import *
 # Settings
 st.set_page_config(layout="wide")
 today = datetime.today().date()
-formatted_date = today.strftime("%Y-%m-%d")
-targets = {"Protain": 158, "Fat": 46, "Carbohydrate": 263}
+japan_timezone = pytz.timezone('Asia/Tokyo')
+today_japan_time = japan_timezone.localize(datetime.combine(today, datetime.min.time()))
+formatted_date = today_japan_time.strftime("%Y-%m-%d")
+targets = {"Protein": 158, "Fat": 46, "Carbohydrate": 263}
 
 # Database
 ws_weight = get_worksheet("体重")
@@ -27,24 +30,32 @@ st.title("My Diet App!")
 st.markdown("## PFCの摂取状況")
 # 目標に対して何%食べているかをグラフ表示
 # 今日摂りたいPFCの残量を表示
-d = st.date_input("いつのデータを見ますか？", today)
-# st.write(d, type(today), type(d))
+d = st.date_input("いつのデータを見ますか？", today_japan_time)
 plt, achieve_P, achieve_F, achieve_C = calc_diet(
     diet_db, targets=targets, date=d)
 diet_cols = st.columns([2, 1])
 diet_cols[0].pyplot(plt)
 
-diet_cols[1].markdown(f"## タンパク質:目標{targets['Protain']}g")
-diet_cols[1].write(
-    f"現在{round(achieve_P,1)}%、あと{round(targets['Protain']*(1-achieve_P/100), 1)}g！")
+diet_cols[1].markdown(f"## タンパク質:目標{targets['Protein']}g")
+if achieve_P >= 100:
+    diet_cols[1].write(f"目標を達成しました！({round(achieve_P * targets['Protein'], 1)}g)")
+else:
+    diet_cols[1].write(
+    f"現在{round(achieve_P,1)}%、あと{round(targets['Protein']*(1-achieve_P/100), 1)}g！")
 diet_cols[1].markdown(f"## 脂質:目標{targets['Fat']}g")
-diet_cols[1].write(
+if achieve_F >= 100:
+    diet_cols[1].write(f"目標を達成しました！({round(achieve_F * targets['Fat'], 1)}g)")
+else:
+    diet_cols[1].write(
     f"現在{round(achieve_F, 1)}%、あと{round(targets['Fat']*(1-achieve_F/100), 1)}g！")
 diet_cols[1].markdown(f"## 炭水化物:目標{targets['Carbohydrate']}g")
-diet_cols[1].write(
+if achieve_C >= 100:
+    diet_cols[1].write(f"目標を達成しました！({round(achieve_C * targets['Carbohydrate'], 1)}g)")
+else:
+    diet_cols[1].write(
     f"現在{round(achieve_C, 1)}%、あと{round(targets['Carbohydrate']*(1-achieve_C/100), 1)}g！")
-diet_cols[1].markdown("## 総摂取カロリー")
-calorie = round(achieve_P * targets["Protain"] * 0.04 + achieve_F * targets["Fat"] * 0.09 + achieve_C * targets["Carbohydrate"] * 0.04, 1)
+diet_cols[1].markdown("## 総摂取カロリー：目標2098kcal以下")
+calorie = round(achieve_P * targets["Protein"] * 0.04 + achieve_F * targets["Fat"] * 0.09 + achieve_C * targets["Carbohydrate"] * 0.04, 1)
 diet_cols[1].write(f"**{calorie}**kcal")
 
 st.dataframe(diet_db[diet_db["date"].dt.date == d],
@@ -56,16 +67,6 @@ st.markdown("## 体重の推移")
 weight_fig = visualize_weight_and_body_fat(weight_db, "2023-08-01", "2023-09-30", 73, 69)
 st.pyplot(weight_fig)
 
-# TODO
-# 食事の入力:: Done
-# 体重の入力:: Done
-# 食事・体重DBのEdit機能（更新・削除）:: Done
-# サイドバーに「設定」:: Done
-# ユーザー選択
-# 設定（目標体重、開始日、目標日、代謝）記入 → スプレッドシート書き込み → 目標値（PFC）算出
-# 目標体重推移を計算、DBに作成（設定の更新ボタントリガー）:: Done
-# 体重推移をグラフ化:: Done
-# 実体重の推移を1週間の平均で見せる:: Done
 
 with st.sidebar:
     st.markdown("## データ入力")

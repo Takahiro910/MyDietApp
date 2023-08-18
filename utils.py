@@ -51,14 +51,14 @@ def calc_diet(data, targets, date):
     total_P = filtered_data["Protein"].sum()
     total_F = filtered_data["Fat"].sum()
     total_C = filtered_data["Carbohydrate"].sum()
-    target_P = targets["Protain"]
+    target_P = targets["Protein"]
     target_F = targets["Fat"]
     target_C = targets["Carbohydrate"]
     achieve_P = total_P / target_P * 100
     achieve_F = total_F / target_F * 100
     achieve_C = total_C / target_C * 100
 
-    categories = ["Protain", "Fat", "Carbo"]
+    categories = ["Protein", "Fat", "Carbo"]
     values = [achieve_P, achieve_F, achieve_C]
     plt.bar(categories, values, color=['red', 'green', 'orange'])
     plt.ylabel("Intake (%)", fontsize=14)

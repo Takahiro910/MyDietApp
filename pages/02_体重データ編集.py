@@ -32,7 +32,7 @@ elif operation == "更新":
     st.write("既存データの更新")
     row_to_update = st.number_input("更新する行番号を入力してください", min_value=0, value=0)
     selected_row_data = ws_weight.row_values(row_to_update + 2)
-    edit_date = datetime.datetime.strptime(selected_row_data[0], "%Y-%m-%d").date()
+    edit_date = datetime.strptime(selected_row_data[0], "%Y-%m-%d").date()
     updated_date = st.date_input("日付", value=edit_date)
     updated_weight = st.number_input("体重", value=float(selected_row_data[1]))
     updated_bodyfat = st.number_input("体脂肪率", value=float(selected_row_data[2]))
