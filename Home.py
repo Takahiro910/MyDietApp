@@ -34,15 +34,19 @@ plt, achieve_P, achieve_F, achieve_C = calc_diet(
 diet_cols = st.columns([2, 1])
 diet_cols[0].pyplot(plt)
 
-diet_cols[1].markdown("## タンパク質")
+diet_cols[1].markdown(f"## タンパク質:目標{targets['Protain']}g")
 diet_cols[1].write(
     f"現在{round(achieve_P,1)}%、あと{round(targets['Protain']*(1-achieve_P/100), 1)}g！")
-diet_cols[1].markdown("## 脂質")
+diet_cols[1].markdown(f"## 脂質:目標{targets['Fat']}g")
 diet_cols[1].write(
     f"現在{round(achieve_F, 1)}%、あと{round(targets['Fat']*(1-achieve_F/100), 1)}g！")
-diet_cols[1].markdown("## 炭水化物")
+diet_cols[1].markdown(f"## 炭水化物:目標{targets['Carbohydrate']}g")
 diet_cols[1].write(
     f"現在{round(achieve_C, 1)}%、あと{round(targets['Carbohydrate']*(1-achieve_C/100), 1)}g！")
+diet_cols[1].markdown("## 総摂取カロリー")
+calorie = round(achieve_P * targets["Protain"] * 0.04 + achieve_F * targets["Fat"] * 0.09 + achieve_C * targets["Carbohydrate"] * 0.04, 1)
+diet_cols[1].write(f"**{calorie}**kcal")
+
 st.dataframe(diet_db[diet_db["date"].dt.date == d],
              use_container_width=True, hide_index=True)
 
