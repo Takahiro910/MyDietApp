@@ -30,7 +30,7 @@ st.title("My Diet App!")
 st.markdown("## PFCの摂取状況")
 # 目標に対して何%食べているかをグラフ表示
 # 今日摂りたいPFCの残量を表示
-d = st.date_input("いつのデータを見ますか？", today_japan_time)
+d = st.date_input("いつのデータを見ますか？", formatted_date)
 plt, achieve_P, achieve_F, achieve_C = calc_diet(
     diet_db, targets=targets, date=d)
 diet_cols = st.columns([2, 1])
@@ -38,19 +38,19 @@ diet_cols[0].pyplot(plt)
 
 diet_cols[1].markdown(f"## タンパク質:目標{targets['Protein']}g")
 if achieve_P >= 100:
-    diet_cols[1].write(f"目標を達成しました！({round(achieve_P * targets['Protein'], 1)}g)")
+    diet_cols[1].write(f"目標を達成しました！({round(achieve_P * targets['Protein'] / 100, 1)}g)")
 else:
     diet_cols[1].write(
     f"現在{round(achieve_P,1)}%、あと{round(targets['Protein']*(1-achieve_P/100), 1)}g！")
 diet_cols[1].markdown(f"## 脂質:目標{targets['Fat']}g")
 if achieve_F >= 100:
-    diet_cols[1].write(f"目標を達成しました！({round(achieve_F * targets['Fat'], 1)}g)")
+    diet_cols[1].write(f"目標を達成しました！({round(achieve_F * targets['Fat'] / 100, 1)}g)")
 else:
     diet_cols[1].write(
     f"現在{round(achieve_F, 1)}%、あと{round(targets['Fat']*(1-achieve_F/100), 1)}g！")
 diet_cols[1].markdown(f"## 炭水化物:目標{targets['Carbohydrate']}g")
 if achieve_C >= 100:
-    diet_cols[1].write(f"目標を達成しました！({round(achieve_C * targets['Carbohydrate'], 1)}g)")
+    diet_cols[1].write(f"目標を達成しました！({round(achieve_C * targets['Carbohydrate'] / 100, 1)}g)")
 else:
     diet_cols[1].write(
     f"現在{round(achieve_C, 1)}%、あと{round(targets['Carbohydrate']*(1-achieve_C/100), 1)}g！")
