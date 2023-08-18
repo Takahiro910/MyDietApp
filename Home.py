@@ -10,7 +10,8 @@ st.set_page_config(layout="wide")
 today = datetime.today().date()
 japan_timezone = pytz.timezone('Asia/Tokyo')
 today_japan_time = japan_timezone.localize(datetime.combine(today, datetime.min.time()))
-formatted_date = today_japan_time.strftime("%Y-%m-%d")
+# formatted_date = today_japan_time.strftime("%Y-%m-%d")
+formatted_date = today_japan_time.date()
 targets = {"Protein": 158, "Fat": 46, "Carbohydrate": 263}
 
 # Database
