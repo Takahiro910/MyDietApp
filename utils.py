@@ -1,12 +1,13 @@
 from datetime import datetime
 from dotenv import load_dotenv
+from google.oauth2 import service_account
 import gspread
 import matplotlib.pyplot as plt
+import numpy as np
 from oauth2client.service_account import ServiceAccountCredentials
 import os
 import pandas as pd
-import numpy as np
-# import plotly.graph_objects as go
+import streamlit as st
 
 
 # --- SETTINGS --- #
@@ -23,11 +24,11 @@ def get_worksheet(title):
              'https://www.googleapis.com/auth/drive']
 
     # For Streamlit Share
-    # credentials = service_account.Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=scope)
+    credentials = service_account.Credentials.from_service_account_info(st.secrets["gcp_service_account"], scopes=scope)
 
     # For local
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        JSON_FILE_PATH, scope)
+    # credentials = ServiceAccountCredentials.from_json_keyfile_name(
+    #     JSON_FILE_PATH, scope)
 
     gs = gspread.authorize(credentials)
     spreadsheet_key = SHEET_KEY
