@@ -10,8 +10,8 @@ st.set_page_config(layout="wide")
 today = datetime.today().date()
 japan_timezone = pytz.timezone('Asia/Tokyo')
 current_time_japan = datetime.now(japan_timezone)
-# formatted_date = today_japan_time.strftime("%Y-%m-%d")
 formatted_date = current_time_japan.date()
+formatted_date_str = formatted_date.strftime("%Y-%m-%d")
 targets = {"Protein": 158, "Fat": 46, "Carbohydrate": 263}
 
 # Database
@@ -92,7 +92,7 @@ with st.sidebar:
     input_protein = st.number_input("タンパク質（g）", value=initial_protein)
     input_fat = st.number_input("脂質（g）", value=initial_fat)
     input_carbo = st.number_input("炭水化物（g）", value=initial_carbohydrate)
-    input_diet = [formatted_date, input_protein,
+    input_diet = [formatted_date_str, input_protein,
                   input_fat, input_carbo, selected_item]
     if st.button("食事データを追加"):
         ws_diet.append_row(input_diet)
@@ -101,7 +101,7 @@ with st.sidebar:
     st.markdown("### 体重")
     input_weight = st.number_input("体重")
     input_bodyfat = st.number_input("体脂肪率")
-    input_data = [formatted_date, input_weight, input_bodyfat]
+    input_data = [formatted_date_str, input_weight, input_bodyfat]
     if st.button("体重データ追加"):
         ws_weight.append_row(input_data)
         st.success('データが追加されました！', icon="✅")
