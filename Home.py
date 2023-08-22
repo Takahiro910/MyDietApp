@@ -2,6 +2,7 @@ from datetime import datetime
 import pandas as pd
 import pytz
 import streamlit as st
+import time
 from utils import *
 
 
@@ -101,6 +102,8 @@ with st.sidebar:
     if st.button("食事データを追加"):
         ws_diet.append_row(input_diet)
         st.success('データが追加されました！', icon="✅")
+        time.sleep(2)
+        st.experimental_rerun()
 
     st.markdown("### 体重")
     input_weight = st.number_input("体重")
@@ -109,3 +112,5 @@ with st.sidebar:
     if st.button("体重データ追加"):
         ws_weight.append_row(input_data)
         st.success('データが追加されました！', icon="✅")
+        time.sleep(2)
+        st.experimental_rerun()
