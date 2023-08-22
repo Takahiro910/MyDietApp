@@ -49,22 +49,22 @@ if achieve_P >= 100:
     diet_cols[1].write(f"目標を達成しました！({round(achieve_P * targets['Protein'] / 100, 1)}g)")
 else:
     diet_cols[1].write(
-    f"現在{round(achieve_P,1)}%、あと{round(targets['Protein']*(1-achieve_P/100), 1)}g！")
+    f"現在{round(achieve_P,1)}%、あと**{round(targets['Protein']*(1-achieve_P/100), 1)}g**！")
 diet_cols[1].markdown(f"**脂質:{targets['Fat']}g**")
 if achieve_F >= 100:
     diet_cols[1].write(f"目標を達成しました！({round(achieve_F * targets['Fat'] / 100, 1)}g)")
 else:
     diet_cols[1].write(
-    f"現在{round(achieve_F, 1)}%、あと{round(targets['Fat']*(1-achieve_F/100), 1)}g！")
+    f"現在{round(achieve_F, 1)}%、あと**{round(targets['Fat']*(1-achieve_F/100), 1)}g**！")
 diet_cols[1].markdown(f"**炭水化物:{targets['Carbohydrate']}g**")
 if achieve_C >= 100:
     diet_cols[1].write(f"目標を達成しました！({round(achieve_C * targets['Carbohydrate'] / 100, 1)}g)")
 else:
     diet_cols[1].write(
-    f"現在{round(achieve_C, 1)}%、あと{round(targets['Carbohydrate']*(1-achieve_C/100), 1)}g！")
+    f"現在{round(achieve_C, 1)}%、あと**{round(targets['Carbohydrate']*(1-achieve_C/100), 1)}g**！")
 diet_cols[1].markdown("**総摂取カロリー：2098kcal以下**")
 calorie = round(achieve_P * targets["Protein"] * 0.04 + achieve_F * targets["Fat"] * 0.09 + achieve_C * targets["Carbohydrate"] * 0.04, 1)
-diet_cols[1].write(f"**{calorie}**kcal")
+diet_cols[1].write(f"**{calorie}kcal**")
 
 st.dataframe(diet_db[diet_db["date"].dt.date == d],
              use_container_width=True, hide_index=True)
