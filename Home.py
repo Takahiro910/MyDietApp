@@ -65,8 +65,13 @@ st.dataframe(diet_db[diet_db["date"].dt.date == d],
 
 st.markdown("## 体重の推移")
 # スプレッドシートから取得したデータを加工して線図を表示
-weight_fig = visualize_weight_and_body_fat(weight_db, "2023-08-01", "2023-09-30", 73, 69)
-st.pyplot(weight_fig)
+weekly = st.radio("グラフ表示選択", ("Weekly", "Daily"), holizontal=True)
+if weekly == "Weekly":
+    weight_fig = weekly_weight_and_body_fat(weight_db, "2023-08-01", "2023-09-30", 73, 69)
+    st.pyplot(weight_fig)
+else:
+    weight_fig = daily_weight_and_body_fat(weight_db, "2023-08-01", "2023-09-30", 73, 69)
+    st.pyplot(weight_fig)
 
 
 with st.sidebar:
