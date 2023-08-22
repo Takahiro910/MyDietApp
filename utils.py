@@ -131,6 +131,7 @@ def daily_weight_and_body_fat(dataframe, start_date, end_date, start_weight, tar
         "Weight": weight_data,
         "Body Fat": body_fat_data
     })
+    daily_data.set_index("Date", inplace=True)
 
     # チャートを作成
     fig, ax1 = plt.subplots(figsize=(10, 6))
