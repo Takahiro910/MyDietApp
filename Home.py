@@ -65,7 +65,7 @@ st.dataframe(diet_db[diet_db["date"].dt.date == d],
 
 st.markdown("## 体重の推移")
 # スプレッドシートから取得したデータを加工して線図を表示
-weekly = st.radio("グラフ表示選択", ("Weekly", "Daily"), holizontal=True)
+weekly = st.radio("グラフ表示選択", ("Weekly", "Daily"), horizontal=True)
 if weekly == "Weekly":
     weight_fig = weekly_weight_and_body_fat(weight_db, "2023-08-01", "2023-09-30", 73, 69)
 else:
