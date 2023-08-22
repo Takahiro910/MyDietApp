@@ -68,7 +68,7 @@ def calc_diet(data, targets, date):
     return plt, achieve_P, achieve_F, achieve_C
 
 
-def visualize_weight_and_body_fat(dataframe, start_date, end_date, start_weight, target_weight):
+def weekly_weight_and_body_fat(dataframe, start_date, end_date, start_weight, target_weight):
     # DataFrameから必要なデータを取得
     dataframe = dataframe.replace("", np.nan)
     dataframe = dataframe.dropna(subset=["weight", "fat"])
@@ -117,6 +117,52 @@ def visualize_weight_and_body_fat(dataframe, start_date, end_date, start_weight,
     plt.tight_layout()
     return fig
 
+
+def daily_weight_and_body_fat(dataframe, start_date, end_date, start_weight, target_weight):
+    # DataFrameから必要なデータを取得
+    dataframe = dataframe.replace("", np.nan)
+    dataframe = dataframe.dropna(subset=["weight", "fat"])
+    weight_data = dataframe['weight'].astype(float)
+    body_fat_data = dataframe['fat'].astype(float)
+    dates = dataframe["date"]
+
+    daily_data = pd.DataFrame({
+        "Date": dates,
+        "Weight": weight_data,
+        "Body Fat": body_fat_data
+    })
+
+    # チャートを作成
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+
+    ax1.plot(daily_data.index,
+             daily_data['Weight'], marker='o', color='tab:blue', label="Weight")
+    ax1.set_xlabel("Date")
+    ax1.set_ylabel("Weight", color='tab:blue')
+    ax1.tick_params(axis='y', labelcolor='tab:blue')
+
+    ax2 = ax1.twinx()
+    ax2.plot(daily_data.index, daily_data['Body Fat'],
+             marker='o', color='tab:orange', label="Body Fat")
+    ax2.set_ylabel("Fat Percentage", color='tab:orange')
+    ax2.tick_params(axis='y', labelcolor='tab:orange')
+    ax2.set_ylim(5, 20)
+
+    # 開始日と目標体重をプロット
+    ax1.plot([pd.to_datetime(start_date), pd.to_datetime(end_date)], [
+             start_weight, target_weight], linestyle='--', color='tab:blue', label="Weight Target")
+
+    plt.title("Weight and Fat Percentage Over Time")
+    plt.xticks(rotation=45)
+    plt.gca().get_xticklabels()[0].set_verticalalignment("bottom")
+
+    # 凡例を1つに統合
+    lines, labels = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax2.legend(lines + lines2, labels + labels2, loc='upper right')
+
+    plt.tight_layout()
+    return fig
 
 # --- Others --- #
 def calc_age(birth_year, birth_month, birth_day):
