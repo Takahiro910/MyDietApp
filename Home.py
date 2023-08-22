@@ -10,7 +10,7 @@ from utils import *
 st.set_page_config(
     layout="centered",
     page_title="MyDietApp",
-    page_icon=":weight_lifting:",
+    page_icon=":weight_lifter:",
     initial_sidebar_state="expanded"
     )
 today = datetime.today().date()
@@ -44,25 +44,25 @@ diet_cols = st.columns([2, 1])
 diet_cols[0].pyplot(plt)
 
 diet_cols[1].markdown(f"## 目標値")
-diet_cols[1].markdown(f"### タンパク質:目標{targets['Protein']}g")
+diet_cols[1].markdown(f"**タンパク質:{targets['Protein']}g**")
 if achieve_P >= 100:
     diet_cols[1].write(f"目標を達成しました！({round(achieve_P * targets['Protein'] / 100, 1)}g)")
 else:
     diet_cols[1].write(
     f"現在{round(achieve_P,1)}%、あと{round(targets['Protein']*(1-achieve_P/100), 1)}g！")
-diet_cols[1].markdown(f"### 脂質:目標{targets['Fat']}g")
+diet_cols[1].markdown(f"**脂質:{targets['Fat']}g**")
 if achieve_F >= 100:
     diet_cols[1].write(f"目標を達成しました！({round(achieve_F * targets['Fat'] / 100, 1)}g)")
 else:
     diet_cols[1].write(
     f"現在{round(achieve_F, 1)}%、あと{round(targets['Fat']*(1-achieve_F/100), 1)}g！")
-diet_cols[1].markdown(f"### 炭水化物:目標{targets['Carbohydrate']}g")
+diet_cols[1].markdown(f"**炭水化物:{targets['Carbohydrate']}g**")
 if achieve_C >= 100:
     diet_cols[1].write(f"目標を達成しました！({round(achieve_C * targets['Carbohydrate'] / 100, 1)}g)")
 else:
     diet_cols[1].write(
     f"現在{round(achieve_C, 1)}%、あと{round(targets['Carbohydrate']*(1-achieve_C/100), 1)}g！")
-diet_cols[1].markdown("## 総摂取カロリー：目標2098kcal以下")
+diet_cols[1].markdown("**総摂取カロリー：2098kcal以下**")
 calorie = round(achieve_P * targets["Protein"] * 0.04 + achieve_F * targets["Fat"] * 0.09 + achieve_C * targets["Carbohydrate"] * 0.04, 1)
 diet_cols[1].write(f"**{calorie}**kcal")
 
