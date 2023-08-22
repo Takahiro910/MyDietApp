@@ -7,7 +7,7 @@ from utils import *
 
 
 # Settings
-st.set_page_config(layout="wide")
+# st.set_page_config(layout="wide")
 today = datetime.today().date()
 japan_timezone = pytz.timezone('Asia/Tokyo')
 current_time_japan = datetime.now(japan_timezone)
