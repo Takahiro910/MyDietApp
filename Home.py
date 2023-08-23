@@ -103,8 +103,8 @@ with st.sidebar:
     input_protein = st.number_input("タンパク質（g）", value=initial_protein)
     input_fat = st.number_input("脂質（g）", value=initial_fat)
     input_carbo = st.number_input("炭水化物（g）", value=initial_carbohydrate)
-    input_diet = [formatted_date_str, input_protein,
-                  input_fat, input_carbo, selected_item]
+    input_diet = [formatted_date_str, input_protein, input_fat, input_carbo, None]
+    input_diet.append(selected_item)
     if st.button("食事データを追加"):
         ws_diet.append_row(input_diet)
         st.success('データが追加されました！', icon="✅")
