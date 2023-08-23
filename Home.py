@@ -107,16 +107,9 @@ with st.sidebar:
     input_diet.append(selected_item)
     if st.button("食事データを追加"):
         a_values = ws_diet.col_values(1)
-        row_num = next((index for index, value in enumerate(a_values) if value == ""), None)
-        if row_num is not None:
-            # 0-basedのインデックスなので1を足す
-            row_num += 1
-            ws_diet.append_row(input_diet)
-            st.success('データが追加されました！', icon="✅")
-            time.sleep(2)
-            st.experimental_rerun()
-        else:
-            st.info("処理に失敗しました")
+        row_num = len(a_values) + 1
+        ws_diet.insert_rows(row_num, values=input_diet)
+        st.success('データが追加されました！', icon="✅")
 
     st.markdown("### 体重")
     input_weight = st.number_input("体重")
