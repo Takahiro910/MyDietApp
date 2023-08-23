@@ -106,9 +106,8 @@ with st.sidebar:
     input_diet = [formatted_date_str, input_protein, input_fat, input_carbo, None]
     input_diet.append(selected_item)
     if st.button("食事データを追加"):
-        a_values = ws_diet.col_values(1)
-        row_num = len(a_values) + 1
-        ws_diet.insert_rows(row_num, values=[input_diet])
+        row_num = len(ws_diet.col_values(1)) + 1
+        ws_diet.insert_rows(values=input_diet, row=row_num)
         st.success('データが追加されました！', icon="✅")
 
     st.markdown("### 体重")
