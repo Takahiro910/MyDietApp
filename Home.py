@@ -21,12 +21,21 @@ formatted_date_str = formatted_date.strftime("%Y-%m-%d")
 targets = {"Protein": 158, "Fat": 46, "Carbohydrate": 263}
 
 # Database
-ws_weight = get_worksheet("体重")
-ws_diet = get_worksheet("食事")
-weight_db = get_db(ws_weight)
-weight_db["date"] = pd.to_datetime(weight_db["date"])
-diet_db = get_db(ws_diet)
-diet_db["date"] = pd.to_datetime(diet_db["date"])
+if "ws_diet" not in st.session_state:
+    st.session_state.ws_diet = get_worksheet("食事")
+
+if "ws_weight" not in st.session_state:
+    st.session_state.ws_weight = get_worksheet("体重")
+
+if "diet_db" not in st.session_state:
+    diet_db = get_db(st.session_state.ws_diet)
+    diet_db["date"] = pd.to_datetime(diet_db["date"])
+
+    st.session_state.diet_db = diet_db
+if "weight_db" not in st.session_state:
+    weight_db = get_db(st.session_state.ws_weight)
+    weight_db["date"] = pd.to_datetime(weight_db["date"])
+    st.session_state.weight_db = weight_db
 
 # Page Start
 st.title("My Diet App!")
@@ -39,7 +48,7 @@ st.markdown("## PFCの摂取状況")
 # 今日摂りたいPFCの残量を表示
 d = st.date_input("いつのデータを見ますか？", formatted_date)
 plt, achieve_P, achieve_F, achieve_C = calc_diet(
-    diet_db, targets=targets, date=d)
+    st.session_state.diet_db, targets=targets, date=d)
 diet_cols = st.columns([2, 1])
 diet_cols[0].pyplot(plt)
 
@@ -66,7 +75,7 @@ diet_cols[1].markdown("**総摂取カロリー：2098kcal以下**")
 calorie = round(achieve_P * targets["Protein"] * 0.04 + achieve_F * targets["Fat"] * 0.09 + achieve_C * targets["Carbohydrate"] * 0.04, 1)
 diet_cols[1].write(f"**{calorie}kcal**")
 
-st.dataframe(diet_db[diet_db["date"].dt.date == d],
+st.dataframe(st.session_state.diet_db[st.session_state.diet_db["date"].dt.date == d],
              use_container_width=True, hide_index=True)
 
 
@@ -74,9 +83,9 @@ st.markdown("## 体重の推移")
 # スプレッドシートから取得したデータを加工して線図を表示
 weekly = st.radio("グラフ表示選択", ("Weekly", "Daily"), horizontal=True)
 if weekly == "Weekly":
-    weight_fig = weekly_weight_and_body_fat(weight_db, "2023-08-01", "2023-09-30", 73, 69)
+    weight_fig = weekly_weight_and_body_fat(st.session_state.weight_db, "2023-08-01", "2023-09-30", 73, 69)
 else:
-    weight_fig = daily_weight_and_body_fat(weight_db, "2023-08-01", "2023-09-30", 73, 69)
+    weight_fig = daily_weight_and_body_fat(st.session_state.weight_db, "2023-08-01", "2023-09-30", 73, 69)
 st.pyplot(weight_fig)
 
 
@@ -86,9 +95,9 @@ with st.sidebar:
     data_option = st.radio('選択肢', ['過去のデータを参照する', '新たに入力する'])
     if data_option == '過去のデータを参照する':
         # 過去のデータを参照する場合
-        unique_items = diet_db['Item'].unique()
+        unique_items = st.session_state.diet_db['Item'].unique()
         selected_item = st.selectbox('食品アイテムを選択', unique_items)
-        selected_row = diet_db[diet_db['Item'] == selected_item].iloc[0]
+        selected_row = st.session_state.diet_db[st.session_state.diet_db['Item'] == selected_item].iloc[0]
         initial_protein = selected_row['Protein']
         initial_fat = selected_row['Fat']
         initial_carbohydrate = selected_row['Carbohydrate']
@@ -106,8 +115,11 @@ with st.sidebar:
     input_calorie = round(input_protein * 4 + input_fat * 9 + input_carbo * 4, 1)
     input_diet = [formatted_date_str, input_protein, input_fat, input_carbo, input_calorie, selected_item]
     if st.button("食事データを追加"):
-        ws_diet.append_row(input_diet)
+        st.session_state.ws_diet.append_row(input_diet)
         st.success('データが追加されました！', icon="✅")
+        diet_db = get_db(st.session_state.ws_diet)
+        diet_db["date"] = pd.to_datetime(diet_db["date"])
+        st.session_state.diet_db = diet_db
         time.sleep(1)
         st.experimental_rerun()
 
@@ -116,7 +128,10 @@ with st.sidebar:
     input_bodyfat = st.number_input("体脂肪率")
     input_data = [formatted_date_str, input_weight, input_bodyfat]
     if st.button("体重データ追加"):
-        ws_weight.append_row(input_data)
+        st.session_state.ws_weight.append_row(input_data)
         st.success('データが追加されました！', icon="✅")
+        weight_db = get_db(st.session_state.ws_weight)
+        weight_db["date"] = pd.to_datetime(weight_db["date"])
+        st.session_state.weight_db = weight_db
         time.sleep(1)
         st.experimental_rerun()
