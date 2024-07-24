@@ -18,7 +18,7 @@ japan_timezone = pytz.timezone('Asia/Tokyo')
 current_time_japan = datetime.now(japan_timezone)
 formatted_date = current_time_japan.date()
 formatted_date_str = formatted_date.strftime("%Y-%m-%d")
-targets = {"Protein": 158, "Fat": 46, "Carbohydrate": 263}
+targets = {"Protein": 128, "Fat": 46, "Carbohydrate": 293}
 
 # Database
 if "ws_diet" not in st.session_state:
