@@ -105,8 +105,7 @@ def weekly_weight_and_body_fat(dataframe, start_date, end_date, start_weight, ta
     ax2.set_ylim(5, 20)
 
     # 開始日と目標体重をプロット
-    ax1.plot([pd.to_datetime(start_date), pd.to_datetime(end_date)], [
-       start_weight, target_weight], linestyle='--', color='tab:blue', label="Weight Target")
+    ax1.plot([pd.to_datetime(start_date), pd.to_datetime(end_date)], [start_weight, target_weight], linestyle='--', color='tab:blue', label="Weight Target")
 
     plt.title("Weight and Fat Percentage Over Time")
     plt.xticks(rotation=45)
