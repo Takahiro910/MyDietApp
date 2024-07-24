@@ -124,6 +124,8 @@ def daily_weight_and_body_fat(dataframe, start_date, end_date, start_weight, tar
     # DataFrameから必要なデータを取得
     dataframe = dataframe.replace("", np.nan)
     dataframe = dataframe.dropna(subset=["weight", "fat"])
+    dataframe = dataframe[(dataframe["date_"] >= start_date) & (dataframe["date_"] <= end_date)]
+    
     weight_data = dataframe['weight'].astype(float)
     body_fat_data = dataframe['fat'].astype(float)
     dates = dataframe["date"]
