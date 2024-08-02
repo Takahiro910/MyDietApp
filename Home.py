@@ -83,9 +83,9 @@ st.markdown("## 体重の推移")
 # スプレッドシートから取得したデータを加工して線図を表示
 weekly = st.radio("グラフ表示選択", ("Weekly", "Daily"), horizontal=True)
 if weekly == "Weekly":
-    weight_fig = weekly_weight_and_body_fat(st.session_state.weight_db, "2024-07-21", "2024-08-20", 73, 69)
+    weight_fig = weekly_weight_and_body_fat(st.session_state.weight_db, "2024-07-21", "2024-08-20", 73, 70)
 else:
-    weight_fig = daily_weight_and_body_fat(st.session_state.weight_db, "2024-07-21", "2024-08-20", 73, 69)
+    weight_fig = daily_weight_and_body_fat(st.session_state.weight_db, "2024-07-21", "2024-08-20", 73, 70)
 st.pyplot(weight_fig)
 
 
